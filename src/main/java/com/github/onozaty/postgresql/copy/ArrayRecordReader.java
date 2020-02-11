@@ -2,6 +2,7 @@ package com.github.onozaty.postgresql.copy;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -9,12 +10,14 @@ import java.util.List;
  */
 public class ArrayRecordReader implements RecordReader {
 
-    private final List<Object[]> records;
+    private final Iterator<Object[]> recordIterator;
 
-    private int lastIndex = -1;
+    public ArrayRecordReader(Iterator<Object[]> recordIterator) {
+        this.recordIterator = recordIterator;
+    }
 
     public ArrayRecordReader(List<Object[]> records) {
-        this.records = records;
+        this(records.iterator());
     }
 
     public ArrayRecordReader(Object[]... records) {
@@ -24,12 +27,11 @@ public class ArrayRecordReader implements RecordReader {
     @Override
     public Object[] read() {
 
-        if (lastIndex + 1 >= records.size()) {
-            return null;
+        if (recordIterator.hasNext()) {
+            return recordIterator.next();
         }
 
-        lastIndex++;
-        return records.get(lastIndex);
+        return null;
     }
 
     @Override

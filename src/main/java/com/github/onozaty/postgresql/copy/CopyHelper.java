@@ -14,13 +14,6 @@ import org.postgresql.core.BaseConnection;
  */
 public class CopyHelper {
 
-    public static long copyFrom(BaseConnection connection, DataSource dataSource)
-            throws SQLException, IOException {
-
-        Metadata metadata = dataSource.getMetadata();
-        return copyFrom(connection, metadata.getTableName(), metadata.getColumnNames(), dataSource);
-    }
-
     public static long copyFrom(BaseConnection connection, String tableName, List<String> columnNames, Reader reader)
             throws SQLException, IOException {
 

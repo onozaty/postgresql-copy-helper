@@ -5,23 +5,25 @@ import java.io.Reader;
 
 import org.apache.commons.csv.CSVFormat;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 /**
  * @author onozaty
  */
-@RequiredArgsConstructor
-public class DataSource extends Reader {
+public class CsvConverter extends Reader {
 
-    private static final CSVFormat CSV_FORMAT = CSVFormat.POSTGRESQL_CSV;
-
-    @Getter
-    private final Metadata metadata;
+    private final CSVFormat csvFormat;
 
     private final RecordReader recordReader;
 
     private final CharBuffer charBuffer = new CharBuffer();
+
+    public CsvConverter(RecordReader recordReader, CSVFormat csvFormat) {
+        this.recordReader = recordReader;
+        this.csvFormat = csvFormat;
+    }
+
+    public CsvConverter(RecordReader recordReader) {
+        this(recordReader, CSVFormat.POSTGRESQL_CSV);
+    }
 
     @Override
     public int read() throws IOException {
@@ -33,7 +35,7 @@ public class DataSource extends Reader {
             Object[] values = recordReader.read();
 
             if (values != null) {
-                CSV_FORMAT.printRecord(charBuffer, values);
+                csvFormat.printRecord(charBuffer, values);
                 ch = charBuffer.get();
             }
         }
