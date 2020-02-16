@@ -1,5 +1,6 @@
 package com.github.onozaty.postgresql.copy;
 
+import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.SQLException;
@@ -8,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.postgresql.copy.CopyManager;
 import org.postgresql.core.BaseConnection;
+
+import com.github.onozaty.postgresql.copy.bean.BeanProfile;
 
 /**
  * @author onozaty
@@ -20,6 +23,19 @@ public class CopyHelper {
         String sql = createCopySql(tableName, columnNames);
 
         return new CopyManager(connection).copyIn(sql, reader);
+    }
+
+    public static <T> long copyFrom(BaseConnection connection, List<T> records, Class<T> recordClass)
+            throws SQLException, IOException, IntrospectionException {
+
+        BeanProfile<T> beanProfile = BeanProfile.of(recordClass);
+
+        String sql = createCopySql(beanProfile.getTableName(), beanProfile.getColumnNames());
+
+        BeanRecordReader<T> recordReader = new BeanRecordReader<T>(beanProfile.getColumnValuesAccessor(), records);
+        CsvConverter converter = new CsvConverter(recordReader);
+
+        return new CopyManager(connection).copyIn(sql, converter);
     }
 
     private static String createCopySql(String tableName, List<String> columnNames) {

@@ -2,6 +2,7 @@ package com.github.onozaty.postgresql.copy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.DriverManager;
@@ -18,6 +19,9 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.junit.Test;
 import org.postgresql.core.BaseConnection;
 
+import com.github.onozaty.postgresql.copy.bean.Column;
+import com.github.onozaty.postgresql.copy.bean.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +34,7 @@ public class CopyHelperTest {
     private static final String DATABASE_PASSWORD = "pass1";
 
     @Test
-    public void copyFrom() throws SQLException, IOException {
+    public void copyFrom_reader() throws SQLException, IOException {
 
         try (BaseConnection connection = getConnection()) {
 
@@ -40,7 +44,7 @@ public class CopyHelperTest {
                     connection,
                     "items",
                     Arrays.asList("integer", "text"),
-                    new StringReader("1,a\n2,bb"));
+                    new StringReader("1,text1\n2,text2"));
 
             List<Item> items = getItem(connection);
 
@@ -48,14 +52,48 @@ public class CopyHelperTest {
                     .containsExactlyInAnyOrder(
                             Item.builder()
                                     .integer(1)
-                                    .text("a")
+                                    .text("text1")
                                     .build(),
                             Item.builder()
                                     .integer(2)
-                                    .text("bb")
+                                    .text("text2")
                                     .build());
         }
+    }
 
+    @Test
+    public void copyFrom_bean() throws SQLException, IOException, IntrospectionException {
+
+        try (BaseConnection connection = getConnection()) {
+
+            createTables(connection);
+
+            CopyHelper.copyFrom(
+                    connection,
+                    Arrays.asList(
+                            Item.builder()
+                                    .integer(1)
+                                    .text("text1")
+                                    .build(),
+                            Item.builder()
+                                    .integer(2)
+                                    .text("text2")
+                                    .build()),
+                    Item.class);
+
+            List<Item> items = getItem(connection);
+
+            assertThat(items)
+                    .containsExactlyInAnyOrder(
+                            Item.builder()
+                                    .integer(1)
+                                    .text("text1")
+                                    .build(),
+                            Item.builder()
+                                    .integer(2)
+                                    .text("text2")
+                                    .build());
+        }
     }
 
     private BaseConnection getConnection() throws SQLException {
@@ -92,10 +130,13 @@ public class CopyHelperTest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @Table("items")
     public static class Item {
 
+        @Column("integer")
         private Integer integer;
 
+        @Column("text")
         private String text;
 
         private LocalDate date;
