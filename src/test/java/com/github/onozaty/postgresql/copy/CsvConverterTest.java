@@ -4,6 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -154,4 +159,25 @@ public class CsvConverterTest {
                     .isInstanceOf(IndexOutOfBoundsException.class);
         }
     }
+
+    @Test
+    public void read_date() throws IOException {
+
+        try (CsvConverter csvConverter = new CsvConverter(
+                new ArrayRecordReader(
+                        new Object[] {
+                                LocalDate.of(2020, 2, 1),
+                                LocalTime.of(15, 59, 58, 123456000),
+                                LocalDateTime.of(2020, 2, 1, 15, 59, 58, 123456000),
+                                OffsetDateTime.of(2019, 1, 2, 13, 14, 15, 123456000, ZoneOffset.ofHours(10))
+                        }))) {
+
+            char[] cbuf = new char[100];
+            int readSize = csvConverter.read(cbuf);
+
+            assertThat(new String(cbuf, 0, readSize)).isEqualTo(
+                    "\"2020-02-01\",\"15:59:58.123456\",\"2020-02-01T15:59:58.123456\",\"2019-01-02T13:14:15.123456+10:00\"\n");
+        }
+    }
+
 }
