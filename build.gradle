@@ -1,9 +1,11 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version "1.8.4"
 }
 
 group = 'com.github.onozaty'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = 1.8
 
 repositories {
@@ -20,4 +22,46 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.15.0'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+    repositories {
+        maven {
+            url "file://$buildDir/maven"
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintray_user') ? bintray_user : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintray_api_key') ? bintray_api_key : System.getenv('BINTRAY_API_KEY')
+
+    publications = ['mavenJava']
+
+    pkg {
+        repo = 'maven'
+        name = group + ':' + project.name
+    }
 }
