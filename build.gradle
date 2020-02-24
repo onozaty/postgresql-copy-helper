@@ -45,6 +45,19 @@ publishing {
             from components.java
             artifact sourcesJar
             artifact javadocJar
+
+            pom {
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/onozaty/postgresql-copy-helper.git'
+                    url = 'https://github.com/onozaty/postgresql-copy-helper/'
+                }
+            }
         }
     }
     repositories {
@@ -63,5 +76,7 @@ bintray {
     pkg {
         repo = 'maven'
         name = group + ':' + project.name
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/onozaty/postgresql-copy-helper.git'
     }
 }
