@@ -21,6 +21,7 @@ import lombok.Value;
 
 /**
  * @author onozaty
+ * @param <T> The target bean type
  */
 @Builder(access = AccessLevel.PRIVATE)
 @Value

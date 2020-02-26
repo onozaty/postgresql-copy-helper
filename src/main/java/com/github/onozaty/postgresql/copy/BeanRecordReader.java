@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 /**
  * @author onozaty
+ * @param <T> The target record type
  */
 public class BeanRecordReader<T> implements RecordReader {
 

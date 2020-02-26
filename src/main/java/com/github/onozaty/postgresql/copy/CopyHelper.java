@@ -13,10 +13,23 @@ import org.postgresql.core.BaseConnection;
 import com.github.onozaty.postgresql.copy.bean.BeanProfile;
 
 /**
+ * Helper for PostgreSQL COPY command.
+ * 
  * @author onozaty
  */
 public class CopyHelper {
 
+    /**
+     * Use the COPY command to copying from a reader into a database.
+     *
+     * @param connection Database connection
+     * @param tableName The name of an existing table
+     * @param columnNames List of columns to be copied
+     * @param reader CSV content reader
+     * @return number of rows updated
+     * @throws SQLException
+     * @throws IOException
+     */
     public static long copyFrom(BaseConnection connection, String tableName, List<String> columnNames, Reader reader)
             throws SQLException, IOException {
 
@@ -25,6 +38,18 @@ public class CopyHelper {
         return new CopyManager(connection).copyIn(sql, reader);
     }
 
+    /**
+     * Use the COPY command to copying from a record object list into a database.
+     * 
+     * @param <T> The target record type
+     * @param connection Database connection
+     * @param records A record object list
+     * @param recordClass Type of the class for record object
+     * @return number of rows updated
+     * @throws SQLException
+     * @throws IOException
+     * @throws IntrospectionException
+     */
     public static <T> long copyFrom(BaseConnection connection, List<T> records, Class<T> recordClass)
             throws SQLException, IOException, IntrospectionException {
 
