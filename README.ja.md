@@ -86,5 +86,4 @@ CopyHelper.copyFrom(connection, items, Item.class);
 |---------|----------:|
 | 1件ずつINSERT | 12,000 |
 | Batch INSERT | 1,000 |
-| COPYコマンド | 100 |
-
+| COPYコマンド(本ライブラリを利用) | 100 |
