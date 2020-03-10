@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.onozaty'
-version = '0.0.1'
+version = '0.0.2'
 sourceCompatibility = 1.8
 
 repositories {
@@ -22,6 +22,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.15.0'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.10'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -47,6 +50,9 @@ publishing {
             artifact javadocJar
 
             pom {
+                name = 'postgresql-copy-helper'
+                description = 'Provides a helper class for using the PostgreSQL COPY command.'
+                url = 'https://github.com/onozaty/postgresql-copy-helper/'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -56,6 +62,13 @@ publishing {
                 scm {
                     connection = 'scm:git:https://github.com/onozaty/postgresql-copy-helper.git'
                     url = 'https://github.com/onozaty/postgresql-copy-helper/'
+                }
+                developers {
+                    developer {
+                        id = "onozaty"
+                        name = "Hirokazu Onozato"
+                        email = "onozaty@gmail.com"
+                    }
                 }
             }
         }

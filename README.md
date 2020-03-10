@@ -18,7 +18,7 @@ It is available simply by adding it to a dependency.
 <dependency>
 	<groupId>com.github.onozaty</groupId>
 	<artifactId>postgresql-copy-helper</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<type>pom</type>
 </dependency>
 ```
@@ -26,7 +26,7 @@ It is available simply by adding it to a dependency.
 ### Gradle
 
 ```groovy
-implementation 'com.github.onozaty:postgresql-copy-helper:0.0.1'
+implementation 'com.github.onozaty:postgresql-copy-helper:0.0.2'
 ```
 
 ## Usage

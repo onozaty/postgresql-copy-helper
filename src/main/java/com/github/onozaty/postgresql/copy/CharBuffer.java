@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  * @author onozaty
  */
-public class CharBuffer implements Appendable {
+class CharBuffer implements Appendable {
 
     private final StringBuilder stringBuffer = new StringBuilder();
     private int lastIndex = -1;
