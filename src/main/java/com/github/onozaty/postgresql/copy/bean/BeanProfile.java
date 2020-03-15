@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Singular;
 import lombok.Value;
 
 /**
@@ -29,7 +28,6 @@ public class BeanProfile<T> {
 
     private final String tableName;
 
-    @Singular
     private final List<String> columnNames;
 
     private final Function<T, Object[]> columnValuesAccessor;
@@ -37,7 +35,7 @@ public class BeanProfile<T> {
     public static <T> BeanProfile<T> of(Class<T> clazz) throws IntrospectionException {
 
         BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-        Map<String, Method> getterMap = Stream.of(beanInfo.getPropertyDescriptors())
+        Map<String, Method> propertyMethodMap = Stream.of(beanInfo.getPropertyDescriptors())
                 .collect(Collectors.toMap(
                         PropertyDescriptor::getName,
                         PropertyDescriptor::getReadMethod));
@@ -52,35 +50,55 @@ public class BeanProfile<T> {
 
         builder.tableName(table.value());
 
-        List<Method> getters = new ArrayList<>();
+        List<ColumnProperty> columnProperties = new ArrayList<>();
 
         for (Field field : clazz.getDeclaredFields()) {
             Column column = field.getAnnotation(Column.class);
             if (column != null) {
-                builder.columnName(column.value());
 
-                Method getter = getterMap.get(field.getName());
-                if (getter == null) {
+                Method method = propertyMethodMap.get(field.getName());
+                if (method == null) {
                     throw new IllegalArgumentException(field.getName() + " accessor not found.");
                 }
-                getters.add(getter);
+
+                columnProperties.add(
+                        ColumnProperty.builder()
+                                .columnName(column.value())
+                                .accessor(method)
+                                .build());
             }
         }
 
-        builder.columnValuesAccessor(newColumnValuesAccessor(getters));
+        for (Method method : clazz.getMethods()) {
+            Column column = method.getAnnotation(Column.class);
+            if (column != null) {
+
+                columnProperties.add(
+                        ColumnProperty.builder()
+                                .columnName(column.value())
+                                .accessor(method)
+                                .build());
+            }
+        }
+
+        builder.columnNames(
+                columnProperties.stream()
+                        .map(ColumnProperty::getColumnName)
+                        .collect(Collectors.toList()));
+        builder.columnValuesAccessor(newColumnValuesAccessor(columnProperties));
 
         return builder.build();
     }
 
-    private static <T> Function<T, Object[]> newColumnValuesAccessor(List<Method> getters) {
+    private static <T> Function<T, Object[]> newColumnValuesAccessor(List<ColumnProperty> columnProperties) {
 
         return target -> {
 
-            Object[] values = new Object[getters.size()];
+            Object[] values = new Object[columnProperties.size()];
 
-            for (int i = 0; i < getters.size(); i++) {
+            for (int i = 0; i < columnProperties.size(); i++) {
                 try {
-                    values[i] = getters.get(i).invoke(target);
+                    values[i] = columnProperties.get(i).getAccessor().invoke(target);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
@@ -88,5 +106,14 @@ public class BeanProfile<T> {
 
             return values;
         };
+    }
+
+    @Builder
+    @Value
+    private static class ColumnProperty {
+
+        private String columnName;
+
+        private Method accessor;
     }
 }
