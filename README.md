@@ -1,5 +1,7 @@
 # PostgreSQL COPY Helper
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper)
+
 Provides a helper class for using the PostgreSQL COPY command.  
 Import a list of objects easily and quickly.
 

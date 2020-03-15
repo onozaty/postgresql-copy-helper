@@ -1,5 +1,7 @@
 # PostgreSQL COPY Helper
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper)
+
 PostgreSQLのCOPYコマンドを利用するためのヘルパクラスを提供します。  
 オブジェクトの一覧を簡単かつ高速にインポートできます。
 
