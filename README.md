@@ -1,4 +1,4 @@
-# postgresql-copy-helper
+# PostgreSQL COPY Helper
 
 Provides a helper class for using the PostgreSQL COPY command.  
 Import a list of objects easily and quickly.
@@ -18,7 +18,7 @@ It is available simply by adding it to a dependency.
 <dependency>
 	<groupId>com.github.onozaty</groupId>
 	<artifactId>postgresql-copy-helper</artifactId>
-	<version>0.0.2</version>
+	<version>1.0.0</version>
 	<type>pom</type>
 </dependency>
 ```

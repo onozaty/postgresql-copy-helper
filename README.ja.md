@@ -1,4 +1,4 @@
-# postgresql-copy-helper
+# PostgreSQL COPY Helper
 
 PostgreSQLのCOPYコマンドを利用するためのヘルパクラスを提供します。  
 オブジェクトの一覧を簡単かつ高速にインポートできます。
@@ -18,7 +18,7 @@ postgresql-copy-helper は jCenter で公開されています。
 <dependency>
 	<groupId>com.github.onozaty</groupId>
 	<artifactId>postgresql-copy-helper</artifactId>
-	<version>0.0.2</version>
+	<version>1.0.0</version>
 	<type>pom</type>
 </dependency>
 ```
