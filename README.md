@@ -2,7 +2,7 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper)
 
-Provides a helper class for using the PostgreSQL COPY command.  
+PostgreSQL COPY Helper is a Java library that provides a helper class for using the PostgreSQL COPY command.  
 Import a list of objects easily and quickly.
 
 PostgreSQL COPY command is much faster than INSERT.
@@ -11,7 +11,7 @@ PostgreSQL COPY command is much faster than INSERT.
 
 ## Setup
 
-postgresql-copy-helper is published on jCenter.  
+PostgreSQL COPY Helper is published on jCenter and Maven Central.  
 It is available simply by adding it to a dependency.
 
 ### maven
@@ -28,7 +28,7 @@ It is available simply by adding it to a dependency.
 ### Gradle
 
 ```groovy
-implementation 'com.github.onozaty:postgresql-copy-helper:0.0.2'
+implementation 'com.github.onozaty:postgresql-copy-helper:1.0.0'
 ```
 
 ## Usage

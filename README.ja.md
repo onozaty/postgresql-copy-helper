@@ -2,7 +2,7 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.onozaty/postgresql-copy-helper)
 
-PostgreSQLのCOPYコマンドを利用するためのヘルパクラスを提供します。  
+PostgreSQL COPY Helper は、PostgreSQLのCOPYコマンドを利用するためのヘルパクラスを提供するJava用ライブラリです。  
 オブジェクトの一覧を簡単かつ高速にインポートできます。
 
 PostgreSQLのCOPYコマンドは、INSERTと比べてとても高速に動作します。
@@ -11,7 +11,7 @@ PostgreSQLのCOPYコマンドは、INSERTと比べてとても高速に動作し
 
 ## セットアップ
 
-postgresql-copy-helper は jCenter で公開されています。  
+PostgreSQL COPY Helper は jCenter および Maven Central で公開されています。  
 依存関係に追加するだけで利用可能です。
 
 ### maven
@@ -28,7 +28,7 @@ postgresql-copy-helper は jCenter で公開されています。
 ### Gradle
 
 ```groovy
-implementation 'com.github.onozaty:postgresql-copy-helper:0.0.2'
+implementation 'com.github.onozaty:postgresql-copy-helper:1.0.0'
 ```
 
 ## 利用方法
