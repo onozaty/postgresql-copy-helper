@@ -20,7 +20,7 @@ PostgreSQL COPY Helper は jCenter および Maven Central で公開されてい
 <dependency>
 	<groupId>com.github.onozaty</groupId>
 	<artifactId>postgresql-copy-helper</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<type>pom</type>
 </dependency>
 ```
@@ -28,7 +28,7 @@ PostgreSQL COPY Helper は jCenter および Maven Central で公開されてい
 ### Gradle
 
 ```groovy
-implementation 'com.github.onozaty:postgresql-copy-helper:1.0.0'
+implementation 'com.github.onozaty:postgresql-copy-helper:1.1.0'
 ```
 
 ## 利用方法

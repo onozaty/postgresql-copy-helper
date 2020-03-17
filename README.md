@@ -13,14 +13,13 @@ PostgreSQL COPY command is much faster than INSERT.
 
 PostgreSQL COPY Helper is published on jCenter and Maven Central.  
 It is available simply by adding it to a dependency.
-
 ### maven
 
 ```xml
 <dependency>
 	<groupId>com.github.onozaty</groupId>
 	<artifactId>postgresql-copy-helper</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<type>pom</type>
 </dependency>
 ```
@@ -28,7 +27,7 @@ It is available simply by adding it to a dependency.
 ### Gradle
 
 ```groovy
-implementation 'com.github.onozaty:postgresql-copy-helper:1.0.0'
+implementation 'com.github.onozaty:postgresql-copy-helper:1.1.0'
 ```
 
 ## Usage
