@@ -16,8 +16,11 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -68,7 +71,7 @@ public class CopyHelperTest {
     }
 
     @Test
-    public void copyFrom_bean() throws SQLException, IOException, IntrospectionException {
+    public void copyFrom_bean_list() throws SQLException, IOException, IntrospectionException {
 
         try (BaseConnection connection = getConnection()) {
 
@@ -99,6 +102,42 @@ public class CopyHelperTest {
                                     .integer(2)
                                     .text("text2")
                                     .build());
+        }
+    }
+
+    @Test
+    public void copyFrom_bean_iterator() throws SQLException, IOException, IntrospectionException {
+
+        try (BaseConnection connection = getConnection()) {
+
+            createTables(connection);
+
+            Iterator<Item> iterator = new Iterator<CopyHelperTest.Item>() {
+
+                private int count;
+
+                @Override
+                public Item next() {
+                    return Item.builder()
+                            .integer(++count)
+                            .build();
+                }
+
+                @Override
+                public boolean hasNext() {
+                    return count < 1000;
+                }
+            };
+
+            CopyHelper.copyFrom(connection, iterator, Item.class);
+
+            List<Item> items = getItems(connection);
+
+            assertThat(items)
+                    .containsExactlyInAnyOrderElementsOf(
+                            IntStream.rangeClosed(1, 1000)
+                                    .mapToObj(x -> Item.builder().integer(x).build())
+                                    .collect(Collectors.toList()));
         }
     }
 

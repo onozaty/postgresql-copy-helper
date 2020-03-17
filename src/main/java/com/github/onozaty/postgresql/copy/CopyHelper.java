@@ -4,6 +4,7 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,24 @@ public class CopyHelper {
      * @throws IntrospectionException
      */
     public static <T> long copyFrom(BaseConnection connection, List<T> records, Class<T> recordClass)
+            throws SQLException, IOException, IntrospectionException {
+
+        return copyFrom(connection, records.iterator(), recordClass);
+    }
+
+    /**
+     * Use the COPY command to copying from a record object iterator into a database.
+     * 
+     * @param <T> The target record type
+     * @param connection Database connection
+     * @param records A record object iterator
+     * @param recordClass Type of the class for record object
+     * @return number of rows updated
+     * @throws SQLException
+     * @throws IOException
+     * @throws IntrospectionException
+     */
+    public static <T> long copyFrom(BaseConnection connection, Iterator<T> records, Class<T> recordClass)
             throws SQLException, IOException, IntrospectionException {
 
         BeanProfile<T> beanProfile = BeanProfile.of(recordClass);
